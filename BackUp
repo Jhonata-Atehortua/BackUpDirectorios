@@ -1,0 +1,36 @@
+import shutil
+import os
+import time
+
+path_xampp = "Ruta donde se va a obtener la informacion"
+path_xampp_back = "Ruta donde se va a guardar la copia de seguridad"
+
+inicio = time.strftime("%Y-%m-%d_%H-%M-%S")
+print("Fecha Inicio: ",inicio)
+
+def copy_files(origenData, DestinoData):
+    #verifca si la carpeta existe si no existe la crea
+    if not os.path.exists(DestinoData):
+        os.makedirs(DestinoData)
+
+    #recorremos las carpetas del origen ddata que es el parametro
+    for item in os.listdir(origenData):
+        #origen del archivo que se va a guardar
+        src_item = os.path.join(origenData, item)
+        #destino del archivo donde se va a guardar
+        dst_item = os.path.join(DestinoData, item)
+
+        #verificamos si existe una carpeta si la carpeta existe 
+        #volvemos a ejecutar la funcion de copiar files con las rutas nuevas
+        if os.path.isdir(src_item):
+            copy_files(src_item, dst_item)
+        else:
+            #guardamos el archivo en la ubicacion que le pertenece
+            shutil.copy2(src_item, DestinoData)
+
+#ejecutamos la funcion con los dos parametros principales
+copy_files(path_xampp, path_xampp_back)
+
+final = time.strftime("%Y-%m-%d_%H-%M-%S")
+print("Fecha final: ",final)
+print("")
